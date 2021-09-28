@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { DataGridPro } from '@mui/x-data-grid-pro';
+import axios from 'axios';
 
-function App() {
+export default function App() {
+  const [data, setData] = useState([]);
+
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await axios.get(`https://api.coincap.io/v2/assets`);
+      setData(response.data.data)
+    }
+    fetchData();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ height: 700, width: '100%' }}>
+      <DataGridPro
+        columns={[
+          { field: 'id' },
+          { field: 'symbol' },
+          { field: 'rank' },
+          { field: 'priceUsd', width: 130 },
+        ]}
+        rows={data}
+      />
     </div>
   );
 }
-
-export default App;
