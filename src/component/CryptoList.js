@@ -18,11 +18,12 @@ export default function CryptoList() {
         }
         fetchData();
     }, []);
+
     const history = useHistory();
     const routeChange = (id) => {
-
         history.push(`/${id}`);
     }
+
     return (
         <div style={{ height: '85vh', width: '98%', margin: 15 }} className={classes.root}>
             <Typography variant="h4" gutterBottom >
@@ -49,10 +50,8 @@ export default function CryptoList() {
                 { field: 'maxSupply', width: 150 }
                 ]}
                 rows={data}
-                onRowClick={(params, event) => {
+                onRowClick={(params, _event) => {
                     routeChange(params.row.id)
-                    console.log("push -> /roles/" + params, event);
-                    console.log(params.row);
                 }}
             />
         </div>
