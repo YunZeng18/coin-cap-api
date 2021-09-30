@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
 import { DataGrid } from '@mui/x-data-grid';
 import { makeStyles } from '@mui/styles';
@@ -13,14 +13,14 @@ export default function CryptoList() {
 
     useEffect(() => {
         async function fetchData() {
-            const response = await axios.get(`https://api.coincap.io/v2/assets`);
-            setData(response.data.data)
+            const {data} = await axios.get(`https://api.coincap.io/v2/assets`);
+            setData(data.data)
         }
         fetchData();
     }, []);
 
     const history = useHistory();
-    const routeChange = (id) => {
+    const routeChange = (id: string) => {
         history.push(`/${id}`);
     }
 
@@ -39,7 +39,7 @@ export default function CryptoList() {
                     field: 'changePercent24Hr', headerName: '24h %', width: 100,
                     cellClassName: (params) =>
                         clsx('priceChange', {
-                            negative: params.value < 0,
+                            negative: params!.value < 0,
                             positive: params.value >= 0,
                         }),
                 },

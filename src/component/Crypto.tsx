@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
-
 import axios from 'axios';
 import { IgrFinancialChart } from 'igniteui-react-charts';
 import { IgrFinancialChartModule } from 'igniteui-react-charts';
 
+
 IgrFinancialChartModule.register();
 
 
-export default function Crypto(props) {
+export default function Crypto(props: {match:{params:{coinId:string}}}) {
     const [data, setData] = useState([]);
 
 
     useEffect(() => {
         async function fetchData() {
-            const response = await axios.get(`https://api.coincap.io/v2/candles?exchange=poloniex&interval=d1&baseId=ethereum&quoteId=${props.match.params.coinId}`);
-            setData(response.data.data.map(item => ({
+            const {data} = await axios.get(`https://api.coincap.io/v2/candles?exchange=poloniex&interval=d1&baseId=ethereum&quoteId=${props.match.params.coinId}`);
+            setData(data.data.map((item: {open:string,close:string,high:string,low:string,volume:string,period:number}) => ({
                 open: parseFloat(item.open),
                 close: parseFloat(item.close),
                 high: parseFloat(item.high),
@@ -23,10 +23,8 @@ export default function Crypto(props) {
                 time: new Date(item.period)
             }
             )));
-
         }
         fetchData();
-
     }, []);
 
     return (
